@@ -289,8 +289,7 @@ int knot_thing_data_item_read(uint8_t id, knot_msg_data *data)
 			return -1;
 
 		if (item->functions.int_f.read(
-			&(data->payload.val_i.value),
-			 &(data->payload.val_i.multiplier)) < 0)
+			&(data->payload.val_i)) < 0)
 			return -1;
 
 		data->hdr.payload_len += sizeof(knot_value_type_int);
@@ -355,9 +354,8 @@ int knot_thing_data_item_write(uint8_t id, knot_msg_data *data)
 		if (item->functions.int_f.write == NULL)
 			goto done;
 
-		ret_val = item->functions.int_f.write(
-					&data->payload.val_i.value,
-					&data->payload.val_i.multiplier);
+		ret_val = item->functions.int_f.write( 
+					&data->payload.val_i);
 		if (ret_val < 0)
 			break;
 
@@ -438,27 +436,27 @@ int knot_thing_verify_events(knot_msg_data *data)
 		break;
 	case KNOT_VALUE_TYPE_INT:
 		// TODO: add multiplier to comparison
-		if (data->payload.val_i.value < item->config.lower_limit.val_i.value &&
+		if (data->payload.val_i < item->config.lower_limit.val_i &&
 						item->lower_flag == 0) {
 			comparison |= (KNOT_EVT_FLAG_LOWER_THRESHOLD & item->config.event_flags);
 			item->upper_flag = 0;
 			item->lower_flag = 1;
-		} else if (data->payload.val_i.value > item->config.upper_limit.val_i.value &&
+		} else if (data->payload.val_i > item->config.upper_limit.val_i &&
 			   item->upper_flag == 0) {
 			comparison |= (KNOT_EVT_FLAG_UPPER_THRESHOLD & item->config.event_flags);
 			item->upper_flag = 1;
 			item->lower_flag = 0;
 		} else {
-			if (data->payload.val_i.value < item->config.upper_limit.val_i.value)
+			if (data->payload.val_i < item->config.upper_limit.val_i)
 				item->upper_flag = 0;
-			if (data->payload.val_i.value > item->config.lower_limit.val_i.value)
+			if (data->payload.val_i > item->config.lower_limit.val_i)
 				item->lower_flag = 0;
 		}
 
-		if (data->payload.val_i.value != last->val_i.value)
+		if (data->payload.val_i != last->val_i)
 			comparison |= (KNOT_EVT_FLAG_CHANGE & item->config.event_flags);
 
-		last->val_i.value = data->payload.val_i.value;
+		last->val_i = data->payload.val_i;
 		last->val_i.multiplier = data->payload.val_i.multiplier;
 		break;
 	case KNOT_VALUE_TYPE_FLOAT:
@@ -474,9 +472,9 @@ int knot_thing_verify_events(knot_msg_data *data)
 			item->upper_flag = 1;
 			item->lower_flag = 0;
 		} else {
-			if (data->payload.val_i.value < item->config.upper_limit.val_i.value)
+			if (data->payload.val_i < item->config.upper_limit.val_i)
 				item->upper_flag = 0;
-			if (data->payload.val_i.value > item->config.lower_limit.val_i.value)
+			if (data->payload.val_i > item->config.lower_limit.val_i)
 				item->lower_flag = 0;
 		}
 		if (data->payload.val_f.value_int != last->val_f.value_int)
