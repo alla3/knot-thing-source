@@ -183,14 +183,14 @@ int8_t knot_thing_register_data_item(uint8_t id, const char *name,
 }
 
 int knot_thing_config_data_item(uint8_t id, uint8_t evflags, uint16_t time_sec,
-							knot_value_type *lower,
-							knot_value_type *upper)
+							void *lower,
+							void *upper)
 {
 	struct _data_items *item = find_item(id);
 
 	/*Check if config is valid*/
-	if (knot_config_is_valid(evflags, time_sec, lower, upper)
-								!= KNOT_SUCCESS)
+	if (knot_config_is_valid(evflags, item->value_type, time_sec, lower,
+				 upper) != KNOT_SUCCESS)
 		return -1;
 
 	if (!item)

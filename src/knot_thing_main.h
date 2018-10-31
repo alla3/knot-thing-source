@@ -77,8 +77,7 @@ int knot_thing_data_item_read(uint8_t id, knot_msg_data *data);
 int knot_thing_data_item_write(uint8_t id, knot_msg_data *data);
 int knot_thing_verify_events(knot_msg_data *data);
 int knot_thing_config_data_item(uint8_t id, uint8_t evflags, uint16_t time_sec,
-						knot_value_type *lower,
-						knot_value_type *upper);
+						void *lower, void *upper);
 
 /*
  * Auxiliary functions

@@ -82,17 +82,8 @@ void KNoTThing::run()
 }
 
 int KNoTThing::registerDefaultConfig(uint8_t sensor_id, uint8_t event_flags,
-		uint16_t time_sec, int32_t upper_int, uint32_t upper_dec,
-		int32_t lower_int, uint32_t lower_dec)
+		uint16_t time_sec, void *upper, void *lower)
 {
-	knot_value_type lower;
-	knot_value_type upper;
-
-	lower.val_f.value_int = lower_int;
-	lower.val_f.value_dec = lower_dec;
-	upper.val_f.value_int = upper_int;
-	upper.val_f.value_dec = upper_dec;
-
 	return knot_thing_config_data_item(sensor_id, event_flags, time_sec,
-								&lower, &upper);
+								lower, upper);
 }
