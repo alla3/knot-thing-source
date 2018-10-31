@@ -127,7 +127,7 @@ void setup(void)
                     KNOT_UNIT_MASS_G, scale_read, scale_write);
 
     /*Send data when value is less than 1000*/
-    thing.registerDefaultConfig(SCALE_ID, KNOT_EVT_FLAG_LOWER_THRESHOLD, 0, 0, 0, 1000, 0);
+    thing.registerDefaultConfig(SCALE_ID, KNOT_EVT_FLAG_LOWER_THRESHOLD, 0, 0, 1000);
 
     /* Read offset from EEPROM */
     EEPROM.get(OFFSET_ADDR, offset);

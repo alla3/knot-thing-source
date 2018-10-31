@@ -117,7 +117,7 @@ void setup(void)
 	/* Send data every 30 seconds */
 	thing.registerDefaultConfig(LED_ID,
 			KNOT_EVT_FLAG_TIME | KNOT_EVT_FLAG_CHANGE,
-			30,0, 0, 0, 0);
+			30, 0, 0);
 
 	/* Print thing name via Serial */
 	Serial.println(F(THING_NAME));
